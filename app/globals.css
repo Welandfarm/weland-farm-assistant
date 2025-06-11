@@ -35,13 +35,13 @@ body {
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 142 71% 45%; /* Green primary color */
+    --primary: 142 71% 45%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 24 95% 53%; /* Orange secondary color */
+    --secondary: 24 95% 53%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 36 100% 96%; /* Cream accent color */
+    --accent: 36 100% 96%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -110,37 +110,41 @@ body {
 
 /* Custom color classes to match the original design */
 .bg-weland-cream {
-  background-color: #fef7ed;
+  background-color: #fef7ed !important;
 }
 
 .bg-weland-green {
-  background-color: #16a34a;
+  background-color: #16a34a !important;
 }
 
 .bg-weland-orange {
-  background-color: #f97316;
+  background-color: #f97316 !important;
 }
 
 .text-weland-green {
-  color: #16a34a;
+  color: #16a34a !important;
 }
 
 .text-weland-orange {
-  color: #f97316;
+  color: #f97316 !important;
 }
 
 .hover\:bg-weland-green:hover {
-  background-color: #15803d;
+  background-color: #15803d !important;
 }
 
 .hover\:bg-weland-orange:hover {
-  background-color: #ea580c;
+  background-color: #ea580c !important;
 }
 
 .border-weland-green {
-  border-color: #16a34a;
+  border-color: #16a34a !important;
 }
 
 .border-weland-orange {
-  border-color: #f97316;
+  border-color: #f97316 !important;
+}
+
+.focus\:border-weland-green:focus {
+  border-color: #16a34a !important;
 }
