@@ -36,9 +36,11 @@ export default function Home() {
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 px-8 py-4 text-lg">
-                  Learn More
-                </Button>
+                <Link href="/blog">
+                  <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 px-8 py-4 text-lg">
+                    Learn More
+                  </Button>
+                </Link>
               </div>
             </div>
             <div className="order-1 md:order-2 relative">
