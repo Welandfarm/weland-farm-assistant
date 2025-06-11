@@ -1,61 +1,162 @@
 import { type NextRequest, NextResponse } from "next/server"
 
-// Fallback recommendations by crop type and region
+// Add more comprehensive fallback recommendations
 const fallbackRecommendations: Record<string, Record<string, string>> = {
   default: {
     default:
-      "We're currently experiencing high demand. Here are some general recommendations for farming in Kenya:\n\n" +
-      "1. Soil Preparation: Test your soil pH and nutrient levels before planting. Most Kenyan soils benefit from organic matter addition.\n\n" +
-      "2. Fertilizer: Apply balanced NPK fertilizer at planting. Consider top-dressing with CAN or Urea during the growing season.\n\n" +
-      "3. Planting: Follow recommended spacing for your crop. Plant at the onset of rains for rain-fed agriculture.\n\n" +
-      "4. Pest Management: Practice integrated pest management combining cultural, biological and chemical controls.\n\n" +
-      "5. Harvesting: Harvest at proper maturity to maximize yield and quality.",
+      "**WELAND FARM ASSISTANT - AGRICULTURAL RECOMMENDATIONS**\n\n" +
+      "We're currently experiencing high demand for our AI service. Here are evidence-based recommendations for farming in Kenya:\n\n" +
+      "**1. SOIL PREPARATION**\n" +
+      "• Test your soil pH and nutrient levels before planting\n" +
+      "• Most Kenyan soils are acidic - apply lime if pH is below 5.5\n" +
+      "• Add organic matter (compost, manure) to improve soil structure\n" +
+      "• Plow to appropriate depth (20-30cm for most crops)\n\n" +
+      "**2. FERTILIZER APPLICATION**\n" +
+      "• Apply balanced NPK fertilizer at planting based on soil test results\n" +
+      "• Common rates: 50kg DAP per acre for most crops\n" +
+      "• Top-dress with nitrogen fertilizer (CAN/Urea) 4-6 weeks after planting\n" +
+      "• Split fertilizer applications for better nutrient uptake\n\n" +
+      "**3. PLANTING GUIDELINES**\n" +
+      "• Plant at the onset of reliable rains\n" +
+      "• Use certified seeds from reputable suppliers\n" +
+      "• Follow recommended spacing for your crop\n" +
+      "• Plant at proper depth (2-3 times seed diameter)\n\n" +
+      "**4. PEST & DISEASE MANAGEMENT**\n" +
+      "• Practice crop rotation to break pest cycles\n" +
+      "• Scout fields regularly for early pest detection\n" +
+      "• Use integrated pest management (IPM) approaches\n" +
+      "• Apply pesticides only when necessary and follow label instructions\n\n" +
+      "**5. HARVESTING**\n" +
+      "• Harvest at proper maturity for maximum yield and quality\n" +
+      "• Use proper post-harvest handling to reduce losses\n" +
+      "• Store produce in appropriate conditions\n\n" +
+      "*For personalized recommendations, please contact our agronomists at +254 710 546 911*",
   },
   Maize: {
     default:
-      "Basic recommendations for maize in Kenya:\n\n" +
-      "1. Soil Preparation: Plow to a depth of 20-30cm. Ensure good drainage.\n\n" +
-      "2. Fertilizer: Apply 50kg DAP per acre at planting. Top-dress with 50kg CAN when knee-high.\n\n" +
-      "3. Planting: Space rows 75cm apart, 25-30cm between plants. Plant at onset of reliable rains.\n\n" +
-      "4. Pest Management: Monitor for fall armyworm and stalk borers. Control weeds early.\n\n" +
-      "5. Harvesting: Harvest when husks turn brown and kernels are hard.",
+      "**MAIZE FARMING RECOMMENDATIONS FOR KENYA**\n\n" +
+      "**SOIL PREPARATION**\n" +
+      "• Plow to 20-30cm depth when soil moisture is optimal\n" +
+      "• Apply lime if soil pH is below 5.5 (1-2 tons per acre)\n" +
+      "• Incorporate organic matter (5-10 tons manure per acre)\n" +
+      "• Ensure good drainage to prevent waterlogging\n\n" +
+      "**FERTILIZER RECOMMENDATIONS**\n" +
+      "• Basal: Apply 50kg DAP per acre at planting\n" +
+      "• Top-dressing: Apply 50kg CAN per acre when maize is knee-high\n" +
+      "• For high-potential areas: Consider additional 25kg Urea per acre\n" +
+      "• Apply fertilizer 5cm away from seed and cover with soil\n\n" +
+      "**PLANTING**\n" +
+      "• Spacing: 75cm between rows, 25-30cm between plants\n" +
+      "• Plant 2-3 seeds per hole, thin to 1 plant after germination\n" +
+      "• Planting depth: 3-5cm depending on soil type\n" +
+      "• Best varieties for Kenya: H614, H6213, DK8031, SC Duma 43\n\n" +
+      "**PEST MANAGEMENT**\n" +
+      "• Monitor for fall armyworm, especially in young plants\n" +
+      "• Control stalk borers using biological or chemical methods\n" +
+      "• Practice crop rotation with legumes\n" +
+      "• Remove crop residues to reduce pest carryover\n\n" +
+      "**HARVESTING**\n" +
+      "• Harvest when husks turn brown and kernels are hard\n" +
+      "• Moisture content should be 20-25% for safe storage\n" +
+      "• Dry to 13.5% moisture before storage\n\n" +
+      "*Expected yield: 25-40 bags per acre with good management*",
   },
   Beans: {
     default:
-      "Basic recommendations for beans in Kenya:\n\n" +
-      "1. Soil Preparation: Prepare a fine seedbed. Beans prefer well-drained soils with pH 5.8-6.5.\n\n" +
-      "2. Fertilizer: Apply 50kg DAP per acre at planting. Beans fix nitrogen so heavy N fertilizer isn't needed.\n\n" +
-      "3. Planting: Space rows 45-50cm apart, 10-15cm between plants. Plant at onset of rains.\n\n" +
-      "4. Pest Management: Watch for bean fly, aphids and thrips. Practice crop rotation.\n\n" +
-      "5. Harvesting: Harvest when pods turn yellow for dry beans, or earlier for green beans.",
+      "**BEAN FARMING RECOMMENDATIONS FOR KENYA**\n\n" +
+      "**SOIL PREPARATION**\n" +
+      "• Prepare fine, well-drained seedbed\n" +
+      "• Beans prefer pH 5.8-6.5\n" +
+      "• Apply lime if pH is below 5.8\n" +
+      "• Incorporate organic matter for better soil structure\n\n" +
+      "**FERTILIZER RECOMMENDATIONS**\n" +
+      "• Apply 50kg DAP per acre at planting\n" +
+      "• Beans fix nitrogen - avoid heavy nitrogen fertilizers\n" +
+      "• In phosphorus-deficient soils, increase DAP to 75kg per acre\n" +
+      "• Apply fertilizer in furrows and mix with soil\n\n" +
+      "**PLANTING**\n" +
+      "• Spacing: 45-50cm between rows, 10-15cm between plants\n" +
+      "• Plant 2 seeds per hole, thin to 1 plant\n" +
+      "• Planting depth: 3-4cm\n" +
+      "• Recommended varieties: Rosecoco, Mwitemania, Nyayo, KAT B1\n\n" +
+      "**PEST & DISEASE MANAGEMENT**\n" +
+      "• Monitor for bean fly, aphids, and thrips\n" +
+      "• Practice crop rotation (avoid planting beans after beans)\n" +
+      "• Control weeds early to reduce competition\n" +
+      "• Watch for angular leaf spot and rust diseases\n\n" +
+      "**HARVESTING**\n" +
+      "• For dry beans: Harvest when pods turn yellow/brown\n" +
+      "• For green beans: Harvest when pods are tender\n" +
+      "• Harvest in dry weather to prevent mold\n\n" +
+      "*Expected yield: 8-15 bags per acre depending on variety and management*",
   },
   Tea: {
     default:
-      "Basic recommendations for tea in Kenya:\n\n" +
-      "1. Soil Preparation: Tea prefers acidic soils (pH 4.5-5.5). Ensure good drainage.\n\n" +
-      "2. Fertilizer: Apply NPK 25:5:5 at 150-200kg per acre split into 2-3 applications per year.\n\n" +
-      "3. Planting: Space plants 0.8m x 1.2m. Mulch around young plants.\n\n" +
-      "4. Pest Management: Monitor for mites, thrips and beetles. Maintain field hygiene.\n\n" +
-      "5. Harvesting: Pluck two leaves and a bud every 7-14 days depending on growth rate.",
+      "**TEA FARMING RECOMMENDATIONS FOR KENYA**\n\n" +
+      "**SOIL REQUIREMENTS**\n" +
+      "• Tea prefers acidic soils (pH 4.5-5.5)\n" +
+      "• Well-drained, deep soils with good organic matter\n" +
+      "• Avoid waterlogged or very sandy soils\n" +
+      "• Altitude: 1,200-2,700m above sea level\n\n" +
+      "**FERTILIZER PROGRAM**\n" +
+      "• Apply NPK 25:5:5 at 150-200kg per acre annually\n" +
+      "• Split into 2-3 applications per year\n" +
+      "• Apply during rainy seasons for better uptake\n" +
+      "• Supplement with organic manure (5-10 tons per acre)\n\n" +
+      "**PLANTING**\n" +
+      "• Spacing: 0.8m x 1.2m (4,167 plants per acre)\n" +
+      "• Plant during rainy seasons\n" +
+      "• Dig holes 45cm x 45cm x 45cm\n" +
+      "• Mulch around young plants to conserve moisture\n\n" +
+      "**MANAGEMENT**\n" +
+      "• Prune regularly to maintain plucking table\n" +
+      "• Control weeds through mulching and manual weeding\n" +
+      "• Monitor for pests: mites, thrips, and beetles\n" +
+      "• Maintain field hygiene\n\n" +
+      "**HARVESTING**\n" +
+      "• Pluck two leaves and a bud\n" +
+      "• Plucking frequency: Every 7-14 days\n" +
+      "• Best time: Early morning when leaves are fresh\n\n" +
+      "*Tea becomes productive after 3-4 years*",
+  },
+  Coffee: {
+    default:
+      "**COFFEE FARMING RECOMMENDATIONS FOR KENYA**\n\n" +
+      "**SOIL & CLIMATE**\n" +
+      "• Well-drained, deep volcanic soils preferred\n" +
+      "• pH range: 6.0-6.5\n" +
+      "• Altitude: 1,400-2,100m above sea level\n" +
+      "• Annual rainfall: 1,000-1,800mm\n\n" +
+      "**FERTILIZER PROGRAM**\n" +
+      "• Apply NPK 17:17:17 at 200-300g per tree\n" +
+      "• Split into 2-3 applications per year\n" +
+      "• Apply during rainy seasons\n" +
+      "• Supplement with organic manure\n\n" +
+      "**PLANTING**\n" +
+      "• Spacing: 2.7m x 2.7m (550 trees per acre)\n" +
+      "• Plant at onset of rains\n" +
+      "• Dig holes 60cm x 60cm x 60cm\n" +
+      "• Use certified seedlings from reputable nurseries\n\n" +
+      "**MANAGEMENT**\n" +
+      "• Prune annually after harvest\n" +
+      "• Control coffee berry disease and leaf rust\n" +
+      "• Monitor for coffee berry borer\n" +
+      "• Mulch around trees to conserve moisture\n\n" +
+      "**HARVESTING**\n" +
+      "• Pick only ripe red cherries\n" +
+      "• Harvest season: October-February\n" +
+      "• Process immediately after picking\n\n" +
+      "*Coffee trees start producing after 3-4 years*",
   },
 }
 
-// Get fallback recommendation based on crop type and location
+// Function to get fallback recommendation
 function getFallbackRecommendation(cropType: string, location: string): string {
-  // Try to get crop-specific and location-specific recommendation
-  if (fallbackRecommendations[cropType]?.[location]) {
-    return fallbackRecommendations[cropType][location]
-  }
-
-  // Try to get crop-specific recommendation
-  if (fallbackRecommendations[cropType]?.default) {
-    return fallbackRecommendations[cropType].default
-  }
-
-  // Return default recommendation
-  return fallbackRecommendations.default.default
+  const cropSpecific = fallbackRecommendations[cropType]?.default
+  return cropSpecific || fallbackRecommendations.default.default
 }
 
+// Update the main function to handle quota errors better
 export async function POST(req: NextRequest) {
   try {
     const { location, cropType, farmSize, soilDescription } = await req.json()
@@ -70,6 +171,8 @@ export async function POST(req: NextRequest) {
         recommendation: fallbackRecommendation,
         success: true,
         source: "fallback",
+        message:
+          "AI service is being configured. These are evidence-based recommendations from our agricultural database.",
       })
     }
 
@@ -120,17 +223,36 @@ export async function POST(req: NextRequest) {
         const errorData = await openaiResponse.json()
         console.error("OpenAI API error:", errorData)
 
-        // If quota exceeded or any other OpenAI error, use fallback
+        // Check for quota-related errors
+        if (
+          errorData.error?.code === "insufficient_quota" ||
+          errorData.error?.message?.includes("quota") ||
+          errorData.error?.message?.includes("billing") ||
+          errorData.error?.message?.includes("exceeded")
+        ) {
+          const fallbackRecommendation = getFallbackRecommendation(cropType, location)
+          return NextResponse.json({
+            recommendation: fallbackRecommendation,
+            success: true,
+            source: "fallback",
+            message:
+              "Our AI service is currently at capacity. These are evidence-based recommendations from our agricultural experts.",
+          })
+        }
+
+        // For other errors, also use fallback
         const fallbackRecommendation = getFallbackRecommendation(cropType, location)
         return NextResponse.json({
           recommendation: fallbackRecommendation,
           success: true,
           source: "fallback",
+          message:
+            "AI service temporarily unavailable. These recommendations are from our agricultural knowledge base.",
         })
       }
 
       const data = await openaiResponse.json()
-      const recommendationText = data.choices[0]?.message?.content || "Unable to generate recommendations at this time."
+      const recommendationText = data.choices[0]?.message?.content || getFallbackRecommendation(cropType, location)
 
       console.log("OpenAI response received successfully")
 
@@ -148,26 +270,19 @@ export async function POST(req: NextRequest) {
         recommendation: fallbackRecommendation,
         success: true,
         source: "fallback",
+        message: "AI service temporarily unavailable. These are expert recommendations from our agricultural database.",
       })
     }
   } catch (error) {
     console.error("Error generating recommendations:", error)
 
-    // Provide more specific error messages
-    if (error instanceof Error) {
-      if (error.message.includes("API key")) {
-        return NextResponse.json({ error: "API configuration issue. Our team has been notified." }, { status: 500 })
-      }
-      if (error.message.includes("quota")) {
-        return NextResponse.json({
-          recommendation: fallbackRecommendations.default.default,
-          success: true,
-          source: "fallback",
-        })
-      }
-      return NextResponse.json({ error: "An error occurred. Please try again later." }, { status: 500 })
-    }
-
-    return NextResponse.json({ error: "Failed to generate recommendations" }, { status: 500 })
+    // Provide fallback even for general errors
+    const fallbackRecommendation = fallbackRecommendations.default.default
+    return NextResponse.json({
+      recommendation: fallbackRecommendation,
+      success: true,
+      source: "fallback",
+      message: "Service temporarily unavailable. Please try again later or contact our agronomists directly.",
+    })
   }
 }
