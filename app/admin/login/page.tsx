@@ -1,27 +1,22 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Loader2, Lock } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    // Basic validation
+    if (!username || !password) {
+      alert("Please enter both username and password.")
+      return
+    }
 
     try {
+      // Simulate API call (replace with actual API endpoint)
       const response = await fetch("/api/admin/login", {
         method: "POST",
         headers: {
@@ -30,83 +25,62 @@ export default function AdminLoginPage() {
         body: JSON.stringify({ username, password }),
       })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || "Login failed")
+      if (response.ok) {
+        // Redirect to admin dashboard on successful login
+        window.location.href = "/admin/dashboard"
+      } else {
+        // Display error message
+        const data = await response.json()
+        alert(data.message || "Login failed. Please check your credentials.")
       }
-
-      // Set a session cookie or token here
-      localStorage.setItem("weland_admin_token", data.token)
-
-      // Redirect to admin dashboard
-      router.push("/admin/dashboard")
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed. Please try again.")
-    } finally {
-      setIsLoading(false)
+    } catch (error) {
+      console.error("Login error:", error)
+      alert("An error occurred during login. Please try again.")
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-weland-cream">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-weland-green rounded-full flex items-center justify-center">
-              <Lock className="h-6 w-6 text-white" />
-            </div>
+    <div className="bg-weland-cream min-h-screen flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+        <h2 className="text-2xl font-semibold mb-4">Admin Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">
+              Username:
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
-          <CardTitle className="text-2xl text-center">Admin Login</CardTitle>
-          <CardDescription className="text-center">
-            Enter your credentials to access the admin dashboard
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">{error}</div>
-            )}
-            <div className="space-y-2">
-              <label htmlFor="username" className="text-sm font-medium">
-                Username
-              </label>
-              <Input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium">
-                Password
-              </label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full bg-weland-green hover:bg-weland-green" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Logging in...
-                </>
-              ) : (
-                "Login"
-              )}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <p className="text-sm text-gray-500">Forgot your password? Contact the system administrator.</p>
-        </CardFooter>
-      </Card>
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+              Password:
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Sign In
+            </button>
+            <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+              Forgot Password?
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
