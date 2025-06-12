@@ -6,9 +6,9 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MessageSquare, ArrowRight } from "lucide-react"
+import { Loader2, ArrowRight, AlertCircle, MessageSquare, Mail, Phone, Share2, Copy, Check } from "lucide-react"
 
 export default function RecommendationForm() {
   const [location, setLocation] = useState("")
@@ -16,31 +16,131 @@ export default function RecommendationForm() {
   const [farmSize, setFarmSize] = useState("")
   const [farmUnit, setFarmUnit] = useState("acres")
   const [soilDescription, setSoilDescription] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [recommendation, setRecommendation] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [isUsingFallback, setIsUsingFallback] = useState(false)
 
-  const handleWhatsAppSubmit = (e: React.FormEvent) => {
+  // Sharing states
+  const [showShareOptions, setShowShareOptions] = useState(false)
+  const [shareMethod, setShareMethod] = useState<"whatsapp" | "sms" | "email" | null>(null)
+  const [contactInfo, setContactInfo] = useState("")
+  const [isSharing, setIsSharing] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
+    setError(null)
+    setIsUsingFallback(false)
 
-    // Format the data for WhatsApp
-    const message = `Hello Weland Farm Assistant! 🌱
+    try {
+      const response = await fetch("/api/recommendations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          location,
+          cropType,
+          farmSize: `${farmSize} ${farmUnit}`,
+          soilDescription,
+        }),
+      })
 
-I need personalized farm recommendations. Here are my details:
+      const data = await response.json()
 
-📍 *Farm Location:* ${location}
-🌾 *Main Crop:* ${cropType}
-📏 *Farm Size:* ${farmSize} ${farmUnit}
-🌱 *Soil Description:* ${soilDescription || "Not provided"}
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to generate recommendations")
+      }
 
-Please provide me with tailored recommendations for soil management and crop production. Thank you!`
+      setRecommendation(data.recommendation)
 
-    const encodedMessage = encodeURIComponent(message)
-    window.open(`https://wa.me/254710546911?text=${encodedMessage}`, "_blank")
+      // Check if we're using fallback recommendations
+      if (data.source === "fallback") {
+        setIsUsingFallback(true)
+      }
+    } catch (err) {
+      console.error("Recommendation error:", err)
+      setError(err instanceof Error ? err.message : "An unexpected error occurred")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleWebSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    // Keep the original web-based functionality as backup
-    // This would be the existing API call logic
-    console.log("Web submission as backup option")
+  const handleReset = () => {
+    setRecommendation(null)
+    setIsUsingFallback(false)
+    setShowShareOptions(false)
+    setShareMethod(null)
+    setContactInfo("")
+  }
+
+  const handleShare = async () => {
+    if (!shareMethod || !contactInfo || !recommendation) return
+
+    setIsSharing(true)
+
+    const shareData = {
+      method: shareMethod,
+      contact: contactInfo,
+      farmDetails: {
+        location,
+        cropType,
+        farmSize: `${farmSize} ${farmUnit}`,
+        soilDescription,
+      },
+      recommendation,
+    }
+
+    try {
+      const response = await fetch("/api/share-recommendation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(shareData),
+      })
+
+      if (response.ok) {
+        alert(`Recommendation sent successfully via ${shareMethod.toUpperCase()}!`)
+        setShowShareOptions(false)
+        setShareMethod(null)
+        setContactInfo("")
+      } else {
+        throw new Error("Failed to send recommendation")
+      }
+    } catch (err) {
+      console.error("Share error:", err)
+      alert("Failed to send recommendation. Please try again.")
+    } finally {
+      setIsSharing(false)
+    }
+  }
+
+  const copyToClipboard = async () => {
+    if (!recommendation) return
+
+    const textToCopy = `FARM RECOMMENDATIONS - ${cropType} in ${location}
+
+Farm Details:
+- Location: ${location}
+- Crop: ${cropType}
+- Size: ${farmSize} ${farmUnit}
+- Soil: ${soilDescription || "Not specified"}
+
+${recommendation}
+
+Generated by Weland Farm Assistant
+Contact: +254 710 546 911`
+
+    try {
+      await navigator.clipboard.writeText(textToCopy)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error("Failed to copy:", err)
+    }
   }
 
   const kenyanCounties = [
@@ -116,135 +216,242 @@ Please provide me with tailored recommendations for soil management and crop pro
     "Oranges",
   ]
 
-  const isFormValid = location && cropType && farmSize
-
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle>Get Personalized Farm Recommendations</CardTitle>
-          <CardDescription>
-            Fill in your farm details and we'll send you tailored recommendations via WhatsApp instantly!
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="location" className="text-sm font-medium">
-                Farm Location (County) *
-              </label>
-              <Select value={location} onValueChange={setLocation} required>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select county" />
-                </SelectTrigger>
-                <SelectContent>
-                  {kenyanCounties.map((county) => (
-                    <SelectItem key={county} value={county}>
-                      {county}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+      {recommendation ? (
+        <div className="space-y-6">
+          {/* Results Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Personalized Recommendations</CardTitle>
+              <CardDescription>
+                Based on your farm in {location} growing {cropType} ({farmSize} {farmUnit})
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isUsingFallback && (
+                <div className="bg-amber-50 border border-amber-200 text-amber-700 px-4 py-3 rounded-md text-sm mb-4 flex items-center">
+                  <AlertCircle className="h-4 w-4 mr-2" />
+                  <span>
+                    We're currently experiencing high demand. These are general recommendations for your crop and
+                    region.
+                  </span>
+                </div>
+              )}
+              <div className="whitespace-pre-line bg-gray-50 p-4 rounded-md text-sm">{recommendation}</div>
+            </CardContent>
+            <CardFooter className="flex flex-col sm:flex-row gap-4">
+              <Button variant="outline" onClick={handleReset} className="flex-1">
+                Generate Another Recommendation
+              </Button>
+              <Button
+                onClick={() => setShowShareOptions(!showShareOptions)}
+                className="flex-1 bg-weland-orange hover:bg-weland-orange"
+              >
+                <Share2 className="mr-2 h-4 w-4" />
+                Share Recommendations
+              </Button>
+              <Button variant="outline" onClick={copyToClipboard} className="flex items-center">
+                {copied ? <Check className="mr-2 h-4 w-4" /> : <Copy className="mr-2 h-4 w-4" />}
+                {copied ? "Copied!" : "Copy"}
+              </Button>
+            </CardFooter>
+          </Card>
 
-            <div className="space-y-2">
-              <label htmlFor="cropType" className="text-sm font-medium">
-                Main Crop *
-              </label>
-              <Select value={cropType} onValueChange={setCropType} required>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select crop" />
-                </SelectTrigger>
-                <SelectContent>
-                  {kenyanCrops.map((crop) => (
-                    <SelectItem key={crop} value={crop}>
-                      {crop}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          {/* Share Options Card */}
+          {showShareOptions && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Share Your Recommendations</CardTitle>
+                <CardDescription>
+                  Choose how you'd like to receive a copy of your personalized recommendations
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Share Method Selection */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <Button
+                    variant={shareMethod === "whatsapp" ? "default" : "outline"}
+                    onClick={() => setShareMethod("whatsapp")}
+                    className={shareMethod === "whatsapp" ? "bg-green-600 hover:bg-green-700" : ""}
+                  >
+                    <MessageSquare className="mr-2 h-4 w-4" />
+                    WhatsApp
+                  </Button>
+                  <Button
+                    variant={shareMethod === "sms" ? "default" : "outline"}
+                    onClick={() => setShareMethod("sms")}
+                    className={shareMethod === "sms" ? "bg-blue-600 hover:bg-blue-700" : ""}
+                  >
+                    <Phone className="mr-2 h-4 w-4" />
+                    SMS
+                  </Button>
+                  <Button
+                    variant={shareMethod === "email" ? "default" : "outline"}
+                    onClick={() => setShareMethod("email")}
+                    className={shareMethod === "email" ? "bg-purple-600 hover:bg-purple-700" : ""}
+                  >
+                    <Mail className="mr-2 h-4 w-4" />
+                    Email
+                  </Button>
+                </div>
 
-            <div className="space-y-2">
-              <label htmlFor="farmSize" className="text-sm font-medium">
-                Farm Size *
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  id="farmSize"
-                  value={farmSize}
-                  onChange={(e) => setFarmSize(e.target.value)}
-                  placeholder="e.g., 2"
-                  required
-                  type="number"
-                  min="0.1"
-                  step="0.1"
-                />
-                <Select value={farmUnit} onValueChange={setFarmUnit}>
-                  <SelectTrigger className="w-[120px]">
-                    <SelectValue placeholder="Unit" />
+                {/* Contact Info Input */}
+                {shareMethod && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">
+                      {shareMethod === "whatsapp" && "Your WhatsApp Number"}
+                      {shareMethod === "sms" && "Your Phone Number"}
+                      {shareMethod === "email" && "Your Email Address"}
+                    </label>
+                    <Input
+                      type={shareMethod === "email" ? "email" : "tel"}
+                      placeholder={
+                        shareMethod === "whatsapp"
+                          ? "+254 712 345 678"
+                          : shareMethod === "sms"
+                            ? "+254 712 345 678"
+                            : "your.email@example.com"
+                      }
+                      value={contactInfo}
+                      onChange={(e) => setContactInfo(e.target.value)}
+                    />
+                  </div>
+                )}
+
+                {/* Send Button */}
+                {shareMethod && contactInfo && (
+                  <Button
+                    onClick={handleShare}
+                    disabled={isSharing}
+                    className="w-full bg-weland-orange hover:bg-weland-orange"
+                  >
+                    {isSharing ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send via {shareMethod.charAt(0).toUpperCase() + shareMethod.slice(1)}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>Get Personalized Farm Recommendations</CardTitle>
+            <CardDescription>
+              Fill in the details about your farm to receive tailored recommendations for soil management and crop
+              production in Kenya.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">{error}</div>
+              )}
+
+              <div className="space-y-2">
+                <label htmlFor="location" className="text-sm font-medium">
+                  Farm Location (County)
+                </label>
+                <Select value={location} onValueChange={setLocation} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select county" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="acres">Acres</SelectItem>
-                    <SelectItem value="hectares">Hectares</SelectItem>
-                    <SelectItem value="sqm">Square Meters</SelectItem>
+                    {kenyanCounties.map((county) => (
+                      <SelectItem key={county} value={county}>
+                        {county}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label htmlFor="soilDescription" className="text-sm font-medium">
-                Soil Description (Optional)
-              </label>
-              <Textarea
-                id="soilDescription"
-                value={soilDescription}
-                onChange={(e) => setSoilDescription(e.target.value)}
-                placeholder="Describe your soil (e.g., red clay soil, sandy soil, etc.) and any issues you've noticed"
-                className="min-h-[100px]"
-              />
-            </div>
+              <div className="space-y-2">
+                <label htmlFor="cropType" className="text-sm font-medium">
+                  Main Crop
+                </label>
+                <Select value={cropType} onValueChange={setCropType} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select crop" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {kenyanCrops.map((crop) => (
+                      <SelectItem key={crop} value={crop}>
+                        {crop}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                type="button"
-                onClick={handleWhatsAppSubmit}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                disabled={!isFormValid}
-              >
-                <MessageSquare className="mr-2 h-4 w-4" />
-                Get Recommendations via WhatsApp
-              </Button>
-              <Button
-                type="button"
-                onClick={handleWebSubmit}
-                variant="outline"
-                className="border-gray-300 text-gray-700"
-                disabled={!isFormValid}
-              >
-                <ArrowRight className="mr-2 h-4 w-4" />
-                Use Web Form (Alternative)
-              </Button>
-            </div>
-
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-start space-x-3">
-                <MessageSquare className="h-5 w-5 text-green-600 mt-0.5" />
-                <div>
-                  <h4 className="font-semibold text-green-800 mb-1">Why WhatsApp?</h4>
-                  <ul className="text-sm text-green-700 space-y-1">
-                    <li>• Get instant personalized recommendations</li>
-                    <li>• Share photos of your crops and soil</li>
-                    <li>• Ask follow-up questions directly</li>
-                    <li>• Save recommendations for future reference</li>
-                  </ul>
+              <div className="space-y-2">
+                <label htmlFor="farmSize" className="text-sm font-medium">
+                  Farm Size
+                </label>
+                <div className="flex gap-2">
+                  <Input
+                    id="farmSize"
+                    value={farmSize}
+                    onChange={(e) => setFarmSize(e.target.value)}
+                    placeholder="e.g., 2"
+                    required
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                  />
+                  <Select value={farmUnit} onValueChange={setFarmUnit}>
+                    <SelectTrigger className="w-[120px]">
+                      <SelectValue placeholder="Unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="acres">Acres</SelectItem>
+                      <SelectItem value="hectares">Hectares</SelectItem>
+                      <SelectItem value="sqm">Square Meters</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+
+              <div className="space-y-2">
+                <label htmlFor="soilDescription" className="text-sm font-medium">
+                  Soil Description (Optional)
+                </label>
+                <Textarea
+                  id="soilDescription"
+                  value={soilDescription}
+                  onChange={(e) => setSoilDescription(e.target.value)}
+                  placeholder="Describe your soil (e.g., red clay soil, sandy soil, etc.) and any issues you've noticed"
+                  className="min-h-[100px]"
+                />
+              </div>
+
+              <Button type="submit" className="w-full bg-weland-orange hover:bg-weland-orange" disabled={isLoading}>
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating Recommendations...
+                  </>
+                ) : (
+                  <>
+                    Get Recommendations
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }
