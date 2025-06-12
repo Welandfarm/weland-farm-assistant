@@ -65,9 +65,11 @@ export default function Home() {
             </div>
             <div className="order-1 md:order-2 relative">
               <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
-                <div className="w-full h-64 bg-gray-100 rounded-md flex items-center justify-center">
-                  <span className="text-gray-400">Farm Image Placeholder</span>
-                </div>
+                <img
+                  src="/images/container-farming-1.jpg"
+                  alt="Container farming with blue buckets growing various plants on red Kenyan soil"
+                  className="w-full h-64 object-cover rounded-md"
+                />
               </div>
             </div>
           </div>
