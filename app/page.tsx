@@ -477,7 +477,18 @@ export default function Home() {
       <footer className="py-12 bg-weland-green text-white">
         <div className="container">
           <div className="text-center">
-            <p className="text-lg">&copy; 2023 Weland Farm Assistant. All rights reserved. | Nairobi, Kenya</p>
+            <div className="flex justify-center items-center space-x-4 mb-6">
+              <img
+                src="/images/weland-logo.png"
+                alt="Weland Agrisols Logo"
+                className="h-12 w-auto filter brightness-0 invert"
+              />
+              <div className="text-left">
+                <div className="text-xl font-bold">WELAND AGRISOLS</div>
+                <div className="text-sm opacity-90">Farm Assistant</div>
+              </div>
+            </div>
+            <p className="text-lg">&copy; 2023 Weland Agrisols. All rights reserved. | Nairobi, Kenya</p>
           </div>
         </div>
       </footer>
