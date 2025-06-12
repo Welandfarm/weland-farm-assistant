@@ -472,8 +472,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Removed duplicate footer */}
     </main>
   )
 }
