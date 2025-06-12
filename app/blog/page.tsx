@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { CalendarIcon, User, ArrowRight } from "lucide-react"
 import Link from "next/link"
 
-// Sample blog posts
+// Sample blog posts with real farming images
 const blogPosts = [
   {
     id: 1,
@@ -12,58 +12,58 @@ const blogPosts = [
       "Learn the best practices for maize cultivation in Kenya's central highlands, including soil preparation, fertilizer application, and pest management strategies.",
     date: "October 15, 2023",
     author: "John Kamau",
-    image: "/placeholder.svg?height=200&width=400",
+    image: "/images/container-farming-1.jpg",
     slug: "maximizing-maize-yields",
   },
   {
     id: 2,
-    title: "Soil Health: The Foundation of Sustainable Farming",
+    title: "Container Farming: Growing More in Less Space",
     excerpt:
-      "Discover how maintaining soil health can lead to long-term agricultural success. This article covers organic matter management, crop rotation, and soil testing.",
+      "Discover how container farming can help small-scale farmers maximize their yields using limited space and resources. Perfect for urban and peri-urban agriculture.",
     date: "September 28, 2023",
     author: "Mary Wanjiku",
-    image: "/placeholder.svg?height=200&width=400",
-    slug: "soil-health-foundation",
+    image: "/images/container-farming-2.jpg",
+    slug: "container-farming-guide",
   },
   {
     id: 3,
-    title: "Climate-Smart Agriculture Techniques for Small-Scale Farmers",
+    title: "Herb Gardening for Kenyan Households",
     excerpt:
-      "Practical approaches to adapt farming practices to changing climate conditions, focusing on water conservation, drought-resistant crops, and sustainable land management.",
+      "Learn how to grow essential herbs and spices at home using simple container methods. Reduce costs and ensure fresh ingredients for your kitchen.",
     date: "November 2, 2023",
     author: "David Ochieng",
-    image: "/placeholder.svg?height=200&width=400",
-    slug: "climate-smart-agriculture",
+    image: "/images/herb-garden.jpg",
+    slug: "herb-gardening-guide",
   },
   {
     id: 4,
-    title: "Effective Pest Management for Kenyan Crops",
+    title: "Sustainable Farming with Simple Greenhouse Techniques",
     excerpt:
-      "Learn about integrated pest management strategies that combine biological, cultural, and chemical controls to protect your crops while minimizing environmental impact.",
+      "Explore low-cost greenhouse methods that protect your crops and extend growing seasons. Perfect for Kenya's diverse climate conditions.",
     date: "October 5, 2023",
     author: "Sarah Njeri",
-    image: "/placeholder.svg?height=200&width=400",
-    slug: "effective-pest-management",
+    image: "/images/greenhouse-farming.jpg",
+    slug: "simple-greenhouse-techniques",
   },
   {
     id: 5,
-    title: "Water Conservation Techniques for Dry Season Farming",
+    title: "Water-Smart Farming for Dry Season Success",
     excerpt:
-      "Explore methods to maximize water efficiency during Kenya's dry seasons, including drip irrigation, mulching, and selecting drought-tolerant crop varieties.",
+      "Master water conservation techniques that keep your crops thriving during Kenya's dry seasons. Learn drip irrigation and mulching strategies.",
     date: "August 20, 2023",
     author: "James Mwangi",
-    image: "/placeholder.svg?height=200&width=400",
-    slug: "water-conservation-techniques",
+    image: "/images/sustainable-farming.jpg",
+    slug: "water-smart-farming",
   },
   {
     id: 6,
-    title: "Profitable Crop Rotation Systems for Small Farms",
+    title: "Small-Scale Irrigation Systems That Work",
     excerpt:
-      "Discover how strategic crop rotation can improve soil fertility, break pest cycles, and increase overall farm productivity and profitability.",
+      "Discover affordable irrigation solutions for small farms. From simple drip systems to efficient water management techniques.",
     date: "July 12, 2023",
     author: "Elizabeth Akinyi",
-    image: "/placeholder.svg?height=200&width=400",
-    slug: "profitable-crop-rotation",
+    image: "/images/container-farming-1.jpg",
+    slug: "small-scale-irrigation",
   },
 ]
 
@@ -87,12 +87,16 @@ export default function BlogPage() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.map((post) => (
-              <Card key={post.id} className="overflow-hidden">
+              <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="h-48 overflow-hidden">
-                  <img src={post.image || "/placeholder.svg"} alt={post.title} className="w-full h-full object-cover" />
+                  <img
+                    src={post.image || "/placeholder.svg"}
+                    alt={post.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
                 </div>
                 <CardHeader>
-                  <CardTitle className="text-xl">{post.title}</CardTitle>
+                  <CardTitle className="text-xl line-clamp-2">{post.title}</CardTitle>
                   <CardDescription className="flex items-center text-sm space-x-4">
                     <span className="flex items-center">
                       <CalendarIcon className="h-4 w-4 mr-1" />
@@ -108,8 +112,11 @@ export default function BlogPage() {
                   <p className="text-gray-600 line-clamp-3">{post.excerpt}</p>
                 </CardContent>
                 <CardFooter>
-                  <Link href={`/blog/${post.slug}`}>
-                    <Button variant="outline" className="text-weland-green border-weland-green hover:bg-green-50">
+                  <Link href={`/blog/${post.slug}`} className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full text-weland-green border-weland-green hover:bg-green-50"
+                    >
                       Read More
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
