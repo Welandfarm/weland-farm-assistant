@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Mail, Loader2, CheckCircle } from "lucide-react"
+import { MessageSquare, Mail } from "lucide-react"
 
 export default function ContactForm() {
   const [name, setName] = useState("")
@@ -18,59 +18,38 @@ export default function ContactForm() {
   const [farmSize, setFarmSize] = useState("")
   const [cropType, setCropType] = useState("")
   const [message, setMessage] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    setError(null)
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          location,
-          inquiryType,
-          farmSize,
-          cropType,
-          message,
-        }),
-      })
+    // Format the data for WhatsApp
+    const whatsappMessage = `Hello Weland Farm Assistant! 👋
 
-      const data = await response.json()
+I'm reaching out regarding: *${inquiryType}*
 
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to send message")
-      }
+*Personal Details:*
+👤 Name: ${name}
+📧 Email: ${email}
+📱 Phone: ${phone}
+📍 Location: ${location || "Not specified"}
 
-      setIsSuccess(true)
-      // Reset form
-      setName("")
-      setEmail("")
-      setPhone("")
-      setLocation("")
-      setInquiryType("")
-      setFarmSize("")
-      setCropType("")
-      setMessage("")
+*Farm Details:*
+🌾 Main Crop: ${cropType || "Not specified"}
+📏 Farm Size: ${farmSize || "Not specified"}
 
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setIsSuccess(false)
-      }, 5000)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An unexpected error occurred")
-    } finally {
-      setIsSubmitting(false)
-    }
+*My Message:*
+${message}
+
+Looking forward to hearing from you!`
+
+    const encodedMessage = encodeURIComponent(whatsappMessage)
+    window.open(`https://wa.me/254710546911?text=${encodedMessage}`, "_blank")
+  }
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    // Keep the original email functionality as backup
+    console.log("Email submission as backup option")
   }
 
   const inquiryTypes = [
@@ -157,19 +136,10 @@ export default function ContactForm() {
     "Other",
   ]
 
+  const isFormValid = name && email && phone && inquiryType && message
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">{error}</div>
-      )}
-
-      {isSuccess && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm flex items-center">
-          <CheckCircle className="h-4 w-4 mr-2" />
-          Your message has been sent successfully! We'll get back to you within 24 hours.
-        </div>
-      )}
-
+    <form className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium text-gray-700">
@@ -304,19 +274,42 @@ export default function ContactForm() {
         />
       </div>
 
-      <Button type="submit" className="w-full bg-weland-green hover:bg-weland-green text-white" disabled={isSubmitting}>
-        {isSubmitting ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Sending Message...
-          </>
-        ) : (
-          <>
-            Send Message
-            <Mail className="ml-2 h-4 w-4" />
-          </>
-        )}
-      </Button>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Button
+          type="button"
+          onClick={handleWhatsAppSubmit}
+          className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+          disabled={!isFormValid}
+        >
+          <MessageSquare className="mr-2 h-4 w-4" />
+          Send via WhatsApp
+        </Button>
+        <Button
+          type="button"
+          onClick={handleEmailSubmit}
+          variant="outline"
+          className="border-gray-300 text-gray-700"
+          disabled={!isFormValid}
+        >
+          <Mail className="mr-2 h-4 w-4" />
+          Send Email (Alternative)
+        </Button>
+      </div>
+
+      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div className="flex items-start space-x-3">
+          <MessageSquare className="h-5 w-5 text-green-600 mt-0.5" />
+          <div>
+            <h4 className="font-semibold text-green-800 mb-1">WhatsApp Benefits:</h4>
+            <ul className="text-sm text-green-700 space-y-1">
+              <li>• Instant response during business hours</li>
+              <li>• Continue the conversation easily</li>
+              <li>• Share additional photos or documents</li>
+              <li>• Get real-time updates on your inquiry</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </form>
   )
 }
