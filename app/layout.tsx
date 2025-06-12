@@ -34,6 +34,9 @@ export default function RootLayout({
                 <Link href="/recommendations" className="text-gray-600 hover:text-weland-green">
                   Recommendations
                 </Link>
+                <Link href="/blog" className="text-gray-600 hover:text-weland-green">
+                  Blog
+                </Link>
                 <Link href="/chat" className="text-gray-600 hover:text-weland-green">
                   Chat
                 </Link>
