@@ -6,9 +6,9 @@ import {
   FlaskRoundIcon as Flask,
   Mail,
   MapPin,
-  Phone,
   Users,
   CheckCircle,
+  MessageSquare,
 } from "lucide-react"
 import ServiceCard from "@/components/service-card"
 import ContactForm from "@/components/contact-form"
@@ -41,6 +41,26 @@ export default function Home() {
                     Learn More
                   </Button>
                 </Link>
+              </div>
+
+              {/* WhatsApp CTA */}
+              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center space-x-3 mb-3">
+                  <MessageSquare className="h-6 w-6 text-green-600" />
+                  <span className="font-semibold text-green-800">Get Instant Help on WhatsApp</span>
+                </div>
+                <p className="text-green-700 text-sm mb-3">
+                  Chat with our agricultural experts directly for immediate assistance with your farming needs.
+                </p>
+                <a
+                  href="https://wa.me/254710546911?text=Hello%20Weland%20Farm%20Assistant,%20I%20need%20help%20with%20my%20farming%20needs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                >
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Chat on WhatsApp
+                </a>
               </div>
             </div>
             <div className="order-1 md:order-2 relative">
@@ -202,12 +222,22 @@ export default function Home() {
                 </div>
               </div>
 
-              <Link href="/chat">
-                <Button size="lg" className="bg-weland-orange hover:bg-weland-orange text-white px-8 py-4 text-lg">
-                  Try Weland Chat
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="https://wa.me/254710546911?text=Hello%20Weland%20Farm%20Assistant,%20I%20have%20farming%20questions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg rounded-lg font-semibold transition-colors"
+                >
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Chat on WhatsApp
+                </a>
+                <Link href="/chat">
+                  <Button variant="outline" size="lg" className="border-gray-300 text-gray-700 px-8 py-4 text-lg">
+                    Try Web Chat
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
@@ -283,8 +313,8 @@ export default function Home() {
               iconBgColor="bg-green-100"
               title="Soil Testing"
               description="Comprehensive soil analysis to understand nutrient levels, pH, and organic matter content for informed decision-making."
-              ctaText="Order Soil Test Kit"
-              ctaColor="bg-weland-green hover:bg-weland-green"
+              ctaText="Order via WhatsApp"
+              ctaColor="bg-green-600 hover:bg-green-700"
               serviceType="test"
             />
 
@@ -293,8 +323,8 @@ export default function Home() {
               iconBgColor="bg-amber-100"
               title="Fertility Management Plans"
               description="Customized fertilizer recommendations based on your specific soil conditions and crop requirements."
-              ctaText="Get Custom Plan"
-              ctaColor="bg-amber-600 hover:bg-amber-700"
+              ctaText="Get Plan via WhatsApp"
+              ctaColor="bg-green-600 hover:bg-green-700"
               serviceType="plan"
             />
 
@@ -303,8 +333,8 @@ export default function Home() {
               iconBgColor="bg-blue-100"
               title="Sustainable Land Use"
               description="Guidance on crop rotation, cover crops, and conservation practices to maintain soil health long-term."
-              ctaText="Book Consultation"
-              ctaColor="bg-blue-600 hover:bg-blue-700"
+              ctaText="Book via WhatsApp"
+              ctaColor="bg-green-600 hover:bg-green-700"
               serviceType="consultation"
             />
 
@@ -313,8 +343,8 @@ export default function Home() {
               iconBgColor="bg-orange-100"
               title="Agronomy Support"
               description="Expert advice from agricultural specialists to help implement recommendations and troubleshoot issues."
-              ctaText="Schedule Call"
-              ctaColor="bg-weland-orange hover:bg-weland-orange"
+              ctaText="Chat on WhatsApp"
+              ctaColor="bg-green-600 hover:bg-green-700"
               serviceType="call"
             />
 
@@ -324,8 +354,8 @@ export default function Home() {
                 iconBgColor="bg-green-100"
                 title="Farm Management Services"
                 description="We manage your investment from land preparation to harvest, guaranteeing you higher yields, without the headaches and time-consuming challenges of regular visits to manage farm operations."
-                ctaText="Request Management Plan"
-                ctaColor="bg-weland-green hover:bg-weland-green"
+                ctaText="Request via WhatsApp"
+                ctaColor="bg-green-600 hover:bg-green-700"
                 serviceType="management"
                 hasSecondaryAction={true}
               />
@@ -340,48 +370,101 @@ export default function Home() {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">Contact Us</h2>
             <p className="text-xl text-gray-600">
-              Have questions? Reach out to us for more information or to schedule a consultation.
+              Get instant help on WhatsApp or use our contact form for detailed inquiries.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
-              <ContactForm />
-            </div>
+            {/* WhatsApp Primary Contact */}
+            <div className="bg-green-50 rounded-xl p-8 border-2 border-green-200">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MessageSquare className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-green-800 mb-2">WhatsApp - Our Primary Contact</h3>
+                <p className="text-green-700">Get instant responses from our agricultural experts</p>
+              </div>
 
-            {/* Contact Information */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
-              <h3 className="text-2xl font-bold mb-6 text-gray-900">Contact Information</h3>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5 text-weland-green" />
-                  <span className="text-gray-700">Westlands, Nairobi, Kenya</span>
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center space-x-3 text-green-700">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span>Instant responses during business hours</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5 text-weland-green" />
-                  <div className="flex flex-col">
-                    <a href="tel:+254710546911" className="text-gray-700 hover:text-weland-green transition-colors">
-                      +254 710 546 911
-                    </a>
-                    <a
-                      href="https://wa.me/254710546911"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-weland-green hover:underline"
-                    >
-                      WhatsApp us
-                    </a>
-                  </div>
+                <div className="flex items-center space-x-3 text-green-700">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span>Share photos of your crops/soil</span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-weland-green" />
-                  <a
-                    href="mailto:welandagrisols@gmail.com"
-                    className="text-gray-700 hover:text-weland-green transition-colors"
-                  >
-                    welandagrisols@gmail.com
+                <div className="flex items-center space-x-3 text-green-700">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span>Voice messages for complex questions</span>
+                </div>
+                <div className="flex items-center space-x-3 text-green-700">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span>Direct connection to our experts</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <a
+                  href="https://wa.me/254710546911?text=Hello%20Weland%20Farm%20Assistant,%20I%20need%20help%20with%20my%20farming%20needs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-4 rounded-lg font-semibold text-center transition-colors flex items-center justify-center"
+                >
+                  <MessageSquare className="mr-2 h-5 w-5" />
+                  Start WhatsApp Chat
+                </a>
+                <div className="text-center">
+                  <a href="tel:+254710546911" className="text-green-700 hover:text-green-800 font-medium">
+                    Or call: +254 710 546 911
                   </a>
                 </div>
+              </div>
+            </div>
+
+            {/* Contact Form - Secondary */}
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+              <h3 className="text-2xl font-bold mb-4 text-gray-900">Alternative Contact Form</h3>
+              <p className="text-gray-600 mb-6">For detailed inquiries or if you prefer email communication.</p>
+              <ContactForm />
+            </div>
+          </div>
+
+          {/* Contact Information */}
+          <div className="mt-12 bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+            <h3 className="text-2xl font-bold mb-6 text-gray-900 text-center">Contact Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <MessageSquare className="h-6 w-6 text-green-600" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">WhatsApp (Primary)</h4>
+                <a
+                  href="https://wa.me/254710546911"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-600 hover:text-green-700 font-medium"
+                >
+                  +254 710 546 911
+                </a>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <Mail className="h-6 w-6 text-weland-orange" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">Email</h4>
+                <a
+                  href="mailto:welandagrisols@gmail.com"
+                  className="text-gray-700 hover:text-weland-green transition-colors"
+                >
+                  welandagrisols@gmail.com
+                </a>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <MapPin className="h-6 w-6 text-blue-600" />
+                </div>
+                <h4 className="font-semibold text-gray-900 mb-2">Location</h4>
+                <span className="text-gray-700">Westlands, Nairobi, Kenya</span>
               </div>
             </div>
           </div>
