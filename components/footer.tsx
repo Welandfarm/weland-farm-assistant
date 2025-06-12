@@ -4,11 +4,9 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="text-center">
           <div className="flex justify-center items-center space-x-4 mb-6">
-            <img
-              src="/images/weland-logo.png"
-              alt="Weland Agrisols Logo"
-              className="h-16 w-auto filter brightness-0 invert"
-            />
+            <div className="bg-white p-2 rounded-lg">
+              <img src="/images/weland-logo.png" alt="Weland Agrisols Logo" className="h-16 w-auto" />
+            </div>
             <div className="text-left">
               <div className="text-xl font-bold">WELAND AGRISOLS</div>
               <div className="text-sm opacity-90">Farm Assistant</div>
