@@ -30,13 +30,16 @@ export default function DownloadAppPage() {
                   <p className="text-sm text-gray-500 text-center">Available for iOS 12+ and Android 8+</p>
                 </div>
               </div>
-              <div className="relative h-[500px] w-full">
-                <Image
-                  src="/placeholder.svg?height=500&width=300"
-                  alt="Weland Farm Assistant Mobile App"
-                  fill
-                  className="object-contain"
-                />
+              <div className="relative h-[500px] w-full flex items-center justify-center">
+                <div className="relative h-[300px] w-[300px]">
+                  <Image
+                    src="/images/weland-logo.png"
+                    alt="Weland Agrisols Farm Assistant App"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               </div>
             </div>
 
