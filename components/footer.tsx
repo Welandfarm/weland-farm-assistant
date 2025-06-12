@@ -1,24 +1,48 @@
+import Link from "next/link"
+import Image from "next/image"
+
 export default function Footer() {
   return (
-    <footer className="py-12 bg-weland-green text-white">
+    <footer className="bg-weland-green text-white py-8">
       <div className="container mx-auto px-4">
-        <div className="text-center">
-          <div className="flex justify-center items-center space-x-4 mb-6">
-            <img
-              src="/images/weland-logo.png"
-              alt="Weland Agrisols Logo"
-              className="h-16 w-auto"
-              style={{
-                filter:
-                  "brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%)",
-              }}
-            />
-            <div className="text-left">
-              <div className="text-xl font-bold">WELAND AGRISOLS</div>
-              <div className="text-sm opacity-90">Farm Assistant</div>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+          <div className="flex items-center mb-4 md:mb-0">
+            <div className="relative h-16 w-16 mr-3">
+              <Image
+                src="/images/weland-logo.png"
+                alt="Weland Agrisols Logo"
+                fill
+                className="object-contain filter brightness-0 invert"
+                style={{ backgroundColor: "transparent" }}
+              />
+            </div>
+            <div>
+              <h3 className="font-bold text-xl">WELAND AGRISOLS</h3>
+              <p className="text-sm">Farm Assistant</p>
             </div>
           </div>
-          <p className="text-lg">&copy; 2023 Weland Agrisols. All rights reserved. | Nairobi, Kenya</p>
+
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link href="/" className="hover:underline">
+              Home
+            </Link>
+            <Link href="/recommendations" className="hover:underline">
+              Recommendations
+            </Link>
+            <Link href="/blog" className="hover:underline">
+              Blog
+            </Link>
+            <Link href="/chat" className="hover:underline">
+              Chat
+            </Link>
+            <Link href="/contact" className="hover:underline">
+              Contact
+            </Link>
+          </div>
+        </div>
+
+        <div className="text-center text-sm">
+          <p>© 2023 Weland Agrisols. All rights reserved. | Nairobi, Kenya</p>
         </div>
       </div>
     </footer>

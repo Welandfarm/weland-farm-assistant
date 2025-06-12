@@ -2,7 +2,6 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import FloatingChatButton from "@/components/floating-chat-button"
 import Footer from "@/components/footer"
 import Link from "next/link"
 
@@ -50,7 +49,6 @@ export default function RootLayout({
                 </Link>
               </nav>
               <div className="md:hidden">
-                {/* Mobile menu button would go here */}
                 <button className="text-gray-600">Menu</button>
               </div>
             </div>
@@ -58,7 +56,6 @@ export default function RootLayout({
         </header>
         {children}
         <Footer />
-        <FloatingChatButton />
       </body>
     </html>
   )

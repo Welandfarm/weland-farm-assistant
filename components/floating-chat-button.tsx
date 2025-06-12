@@ -1,94 +1,71 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { MessageSquare, X, Phone } from "lucide-react"
+import Link from "next/link"
 
 export default function FloatingChatButton() {
   const [isOpen, setIsOpen] = useState(false)
 
-  const toggleChat = () => {
-    setIsOpen(!isOpen)
-  }
-
-  const closeChat = () => {
-    setIsOpen(false)
-  }
-
-  const openWhatsApp = () => {
-    const message = encodeURIComponent("Hello Weland Farm Assistant, I need help with my farming needs.")
-    window.open(`https://wa.me/254710546911?text=${message}`, "_blank")
-  }
-
   return (
-    <>
-      {isOpen ? (
-        <div className="fixed bottom-4 right-4 z-50 w-[90%] max-w-[350px] shadow-2xl rounded-lg overflow-hidden bg-white border border-gray-200">
-          {/* Quick Action Header */}
-          <div className="bg-green-600 text-white p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold">Contact Weland Farm Assistant</h3>
-              <Button
-                onClick={closeChat}
-                className="h-6 w-6 p-0 rounded-full bg-white/20 text-white hover:bg-white/30"
-                size="icon"
-              >
-                <X className="h-3 w-3" />
-              </Button>
-            </div>
-            <p className="text-sm text-green-100">Choose your preferred contact method:</p>
-          </div>
-
-          {/* Contact Options */}
-          <div className="p-4 space-y-3">
-            <Button onClick={openWhatsApp} className="w-full bg-green-600 hover:bg-green-700 text-white justify-start">
-              <MessageSquare className="mr-3 h-5 w-5" />
-              <div className="text-left">
-                <div className="font-semibold">WhatsApp (Recommended)</div>
-                <div className="text-xs text-green-100">Instant response • Share photos</div>
-              </div>
-            </Button>
-
-            <Button
-              onClick={() => {
-                closeChat()
-                // Small delay to allow modal to close before opening web chat
-                setTimeout(() => {
-                  window.location.href = "/chat"
-                }, 100)
-              }}
-              variant="outline"
-              className="w-full justify-start border-gray-300"
+    <div className="fixed bottom-6 right-6 z-50">
+      {isOpen && (
+        <div className="absolute bottom-16 right-0 bg-white rounded-lg shadow-lg p-4 mb-2 w-64">
+          <h3 className="font-bold text-lg mb-2">Need help?</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Chat with our farming experts or get quick recommendations for your farm.
+          </p>
+          <div className="space-y-2">
+            <Link
+              href="/chat"
+              className="block w-full bg-weland-green text-white text-center py-2 rounded-md hover:bg-green-700 transition-colors"
             >
-              <MessageSquare className="mr-3 h-5 w-5" />
-              <div className="text-left">
-                <div className="font-semibold">Web Chat</div>
-                <div className="text-xs text-gray-500">AI-powered assistant</div>
-              </div>
-            </Button>
-
-            <Button
-              onClick={() => window.open("tel:+254710546911")}
-              variant="outline"
-              className="w-full justify-start border-gray-300"
+              Chat with Expert
+            </Link>
+            <Link
+              href="/recommendations"
+              className="block w-full bg-weland-orange text-white text-center py-2 rounded-md hover:bg-amber-600 transition-colors"
             >
-              <Phone className="mr-3 h-5 w-5" />
-              <div className="text-left">
-                <div className="font-semibold">Call Us</div>
-                <div className="text-xs text-gray-500">+254 710 546 911</div>
-              </div>
-            </Button>
+              Get Recommendations
+            </Link>
           </div>
         </div>
-      ) : (
-        <Button
-          onClick={toggleChat}
-          className="fixed bottom-4 right-4 z-50 h-14 w-14 rounded-full bg-green-600 hover:bg-green-700 shadow-lg hover:shadow-xl transition-all duration-200"
-          size="icon"
-        >
-          <MessageSquare className="h-6 w-6 text-white" />
-        </Button>
       )}
-    </>
+
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-weland-green text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-green-700 transition-colors"
+      >
+        {isOpen ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        )}
+      </button>
+    </div>
   )
 }
