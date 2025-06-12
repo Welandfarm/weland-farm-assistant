@@ -481,7 +481,7 @@ export default function Home() {
               <img
                 src="/images/weland-logo.png"
                 alt="Weland Agrisols Logo"
-                className="h-12 w-auto filter brightness-0 invert"
+                className="h-16 w-auto filter brightness-0 invert"
               />
               <div className="text-left">
                 <div className="text-xl font-bold">WELAND AGRISOLS</div>

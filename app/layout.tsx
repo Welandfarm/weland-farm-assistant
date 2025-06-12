@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import FloatingChatButton from "@/components/floating-chat-button"
+import Footer from "@/components/footer"
 import Link from "next/link"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -56,6 +57,7 @@ export default function RootLayout({
           </div>
         </header>
         {children}
+        <Footer />
         <FloatingChatButton />
       </body>
     </html>
