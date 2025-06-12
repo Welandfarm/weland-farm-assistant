@@ -29,23 +29,56 @@
   --radius: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Custom color classes to match the original design */
+.bg-weland-cream {
+  background-color: #fef7ed !important;
+}
+
+.bg-weland-green {
+  background-color: #16a34a !important;
+}
+
+.bg-weland-orange {
+  background-color: #f97316 !important;
+}
+
+.text-weland-green {
+  color: #16a34a !important;
+}
+
+.text-weland-orange {
+  color: #f97316 !important;
+}
+
+.hover\:bg-weland-green:hover {
+  background-color: #15803d !important;
+}
+
+.hover\:bg-weland-orange:hover {
+  background-color: #ea580c !important;
+}
+
+.border-weland-green {
+  border-color: #16a34a !important;
+}
+
+.border-weland-orange {
+  border-color: #f97316 !important;
+}
+
+.focus\:border-weland-green:focus {
+  border-color: #16a34a !important;
 }
